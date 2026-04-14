@@ -14,6 +14,29 @@ A minimal macOS menu bar app blueprint inspired by Turbo Boost Switcher, focused
 - **CPU target**: Intel only (`x86_64`).
 - **Toolchain target**: Swift **5.8.1** compatible project settings.
 - **Minimum macOS target**: Ventura (**13.0+**), including Darwin 22.x (e.g. 22.6.0).
+- UI state updates avoid macOS 14-only `onChange(initial:)` APIs to stay compatible with macOS 13.x.
+
+
+## Local Build and Run
+
+From the repo root on your Intel macOS machine:
+
+```bash
+./scripts/local_build_and_sign.sh
+```
+
+That script will:
+
+1. Build release (`swift build -c release --arch x86_64`)
+2. Create `build/local/M3TurboSwitch.app`
+3. Ad-hoc sign it (`codesign --force --deep --sign -`)
+4. Print the full app path
+
+Launch it with:
+
+```bash
+open build/local/M3TurboSwitch.app
+```
 
 ## Build a `.app` + `.dmg` on your Mac
 

@@ -20,15 +20,21 @@ struct M3TurboSwitchApp: App {
                 state.toggleTurbo()
             }
 
-            Toggle("Open at Login", isOn: $state.openAtLogin)
-                .onChange(of: state.openAtLogin) { _, newValue in
+            Toggle("Open at Login", isOn: Binding(
+                get: { state.openAtLogin },
+                set: { newValue in
+                    state.openAtLogin = newValue
                     state.setOpenAtLogin(newValue)
                 }
+            ))
 
-            Toggle("Disable Turbo Boost on Boot", isOn: $state.disableTurboOnBoot)
-                .onChange(of: state.disableTurboOnBoot) { _, newValue in
+            Toggle("Disable Turbo Boost on Boot", isOn: Binding(
+                get: { state.disableTurboOnBoot },
+                set: { newValue in
+                    state.disableTurboOnBoot = newValue
                     state.setDisableTurboOnBoot(newValue)
                 }
+            ))
 
             Divider()
 
