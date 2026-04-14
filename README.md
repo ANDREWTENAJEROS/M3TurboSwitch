@@ -11,9 +11,9 @@ A minimal macOS menu bar app blueprint inspired by Turbo Boost Switcher, focused
 
 ## CPU + macOS compatibility
 
-- **CPU targets**: Intel (`x86_64`) and Apple Silicon (`arm64`) via universal build.
-- **Minimum macOS target**: Ventura (**13.0+**), including Ventura 13.7.x.
-- This means you can build on Apple Silicon and run the same app bundle on Intel Macs.
+- **CPU target**: Intel only (`x86_64`).
+- **Toolchain target**: Swift **5.8.1** compatible project settings.
+- **Minimum macOS target**: Ventura (**13.0+**), including Darwin 22.x (e.g. 22.6.0).
 
 ## Build a `.app` + `.dmg` on your Mac
 
@@ -76,3 +76,76 @@ xattr -dr com.apple.quarantine /Applications/M3TurboSwitch.app
 ```
 
 After launch, the app appears in the menu bar as a bolt icon.
+
+
+## Troubleshooting: "command not found" for `build_and_package.sh`
+
+If you are already inside the `scripts` folder on your Intel Mac, run:
+
+```bash
+chmod +x build_and_package.sh
+./build_and_package.sh
+```
+
+Do **not** run just `build_and_package.sh` by itself unless `.` is in your PATH.
+
+If it still fails, run it explicitly with bash:
+
+```bash
+bash build_and_package.sh
+```
+
+If you are at repo root, use:
+
+```bash
+./scripts/build_and_package.sh
+```
+
+
+### Error: `unable to lookup item 'platformPath' in sdk`
+
+This means your Xcode/SDK path is not set correctly.
+
+Run:
+
+```bash
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -runFirstLaunch
+xcodebuild -downloadPlatform macOS
+```
+
+Then verify:
+
+```bash
+xcrun --sdk macosx --show-sdk-platform-path
+```
+
+If that prints a valid path, rerun:
+
+```bash
+./build_and_package.sh
+```
+
+
+### Error: `invalid developer directory '/Applications/Xcode.app/Contents/Developer'`
+
+That means full Xcode is not installed at that exact path.
+
+Use one of these instead:
+
+```bash
+# If you installed full Xcode (or it has a different name/path), switch to its real Developer dir
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+# If you only installed Command Line Tools
+sudo xcode-select --switch /Library/Developer/CommandLineTools
+```
+
+Then verify:
+
+```bash
+xcode-select -p
+xcrun --sdk macosx --show-sdk-platform-path
+```
+
+If you do not have full Xcode yet, install it from the App Store first, open it once, then rerun the commands.

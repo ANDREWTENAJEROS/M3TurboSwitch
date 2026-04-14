@@ -3,7 +3,8 @@
 This app is intentionally minimal and targets:
 
 - macOS Ventura 13.0+
-- Intel (`x86_64`) and Apple Silicon (`arm64`) Macs
+- Swift 5.8.1 toolchain
+- Intel (`x86_64`) Macs only
 
 ## Remaining functional work
 

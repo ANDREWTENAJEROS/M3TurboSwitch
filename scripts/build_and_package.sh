@@ -14,8 +14,28 @@ mkdir -p "$RELEASE_DIR"
 
 pushd "$ROOT_DIR" >/dev/null
 
-# Build a universal binary for Intel + Apple Silicon.
-swift build -c release --arch arm64 --arch x86_64
+
+if ! command -v xcrun >/dev/null 2>&1; then
+  echo "xcrun is missing. Install Xcode Command Line Tools first:"
+  echo "  xcode-select --install"
+  exit 1
+fi
+
+if ! xcrun --sdk macosx --show-sdk-platform-path >/dev/null 2>&1; then
+  echo "Unable to resolve macOS SDK (e.g. 'unable to lookup item platformPath in SDK')."
+  echo "Try these fixes:"
+  echo "  # If full Xcode is installed:"
+  echo "  sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer"
+  echo "  # If you only have Command Line Tools installed:"
+  echo "  sudo xcode-select --switch /Library/Developer/CommandLineTools"
+  echo "  sudo xcodebuild -runFirstLaunch"
+  echo "  xcodebuild -downloadPlatform macOS"
+  echo "Then rerun this script."
+  exit 1
+fi
+
+# Build for Intel Macs only (x86_64).
+swift build -c release --arch x86_64
 
 BIN_PATH="$ROOT_DIR/.build/apple/Products/Release/M3TurboSwitchApp"
 if [[ ! -x "$BIN_PATH" ]]; then
