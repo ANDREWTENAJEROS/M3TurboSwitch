@@ -44,5 +44,11 @@ final class AppState: ObservableObject {
 
     func setDisableTurboOnBoot(_ enabled: Bool) {
         preferences.disableTurboOnBoot = enabled
+
+        if enabled && !openAtLogin {
+            openAtLogin = true
+            preferences.openAtLogin = true
+            loginItemManager.setOpenAtLogin(true)
+        }
     }
 }

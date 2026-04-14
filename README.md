@@ -172,3 +172,23 @@ xcrun --sdk macosx --show-sdk-platform-path
 ```
 
 If you do not have full Xcode yet, install it from the App Store first, open it once, then rerun the commands.
+
+
+## Turbo control behavior
+
+- Turbo state is now read from real system state by checking whether `DisableTurboBoost.kext` is loaded.
+- Toggle actions attempt real system load/unload operations (`kmutil`/`kextload`) with macOS admin prompt via `osascript`.
+- This means state can align with other tools that use the same `DisableTurboBoost.kext` mechanism.
+- Requirement: one of these kext paths must exist:
+  - `/Applications/Turbo Boost Switcher.app/Contents/Resources/DisableTurboBoost.kext`
+  - `/Library/Extensions/DisableTurboBoost.kext`
+
+## Temperature behavior
+
+- Temperature still uses a best-effort single `powermetrics` read.
+- If unavailable due permissions/environment, UI shows `N/A (placeholder)`.
+
+## Build message notes
+
+- `incremental completion has been disabled...` is a compiler optimization message and not a functional app error.
+- `fopen failed for data file ... errno = 2` is usually an SDK/toolchain data-path warning on some setups; verify Xcode/CLT path and continue if build succeeds.

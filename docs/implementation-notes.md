@@ -8,9 +8,10 @@ This app is intentionally minimal and targets:
 
 ## Remaining functional work
 
-1. **Privileged Turbo helper**
-   - Provide a helper tool/daemon that can perform Turbo Boost enable/disable.
-   - Expose only two actions: `enable`, `disable`.
+1. **Current Turbo integration (kext-based)**
+   - App now uses real kext load/unload operations (`kmutil`/`kextload`) via admin prompt.
+   - It reads state by checking whether `DisableTurboBoost.kext` is loaded.
+   - Requirement: kext must exist in app resources or `/Library/Extensions`.
 
 2. **One password prompt per app session**
    - In `TurboController.requestAuthorizationOnce()`, acquire authorization once.

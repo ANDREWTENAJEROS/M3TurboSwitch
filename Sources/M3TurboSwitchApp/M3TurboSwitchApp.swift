@@ -7,39 +7,40 @@ struct M3TurboSwitchApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            Button {
-                state.refreshMenuData()
-            } label: {
+            VStack(alignment: .leading, spacing: 8) {
                 Text("Current temp: \(state.currentTemperatureText)")
-            }
-            .disabled(true)
 
-            Divider()
+                Divider()
 
-            Button(state.turboEnabled ? "Disable Turbo Boost" : "Enable Turbo Boost") {
-                state.toggleTurbo()
-            }
-
-            Toggle("Open at Login", isOn: Binding(
-                get: { state.openAtLogin },
-                set: { newValue in
-                    state.openAtLogin = newValue
-                    state.setOpenAtLogin(newValue)
+                Button(state.turboEnabled ? "Disable Turbo Boost" : "Enable Turbo Boost") {
+                    state.toggleTurbo()
                 }
-            ))
 
-            Toggle("Disable Turbo Boost on Boot", isOn: Binding(
-                get: { state.disableTurboOnBoot },
-                set: { newValue in
-                    state.disableTurboOnBoot = newValue
-                    state.setDisableTurboOnBoot(newValue)
+                Toggle("Open at Login", isOn: Binding(
+                    get: { state.openAtLogin },
+                    set: { newValue in
+                        state.openAtLogin = newValue
+                        state.setOpenAtLogin(newValue)
+                    }
+                ))
+
+                Toggle("Disable Turbo Boost on Boot", isOn: Binding(
+                    get: { state.disableTurboOnBoot },
+                    set: { newValue in
+                        state.disableTurboOnBoot = newValue
+                        state.setDisableTurboOnBoot(newValue)
+                    }
+                ))
+
+                Divider()
+
+                Button("Quit") {
+                    NSApplication.shared.terminate(nil)
                 }
-            ))
-
-            Divider()
-
-            Button("Quit") {
-                NSApplication.shared.terminate(nil)
+            }
+            .padding(.vertical, 6)
+            .onAppear {
+                state.refreshMenuData()
             }
         } label: {
             Image(systemName: state.turboEnabled ? "bolt.fill" : "bolt.slash.fill")
