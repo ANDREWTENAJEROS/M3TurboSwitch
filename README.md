@@ -52,3 +52,27 @@ To make Turbo switching fully functional, implement the privileged helper path:
 - Real current CPU temperature read.
 
 See: `docs/implementation-notes.md`.
+
+
+## How to open it on your Mac
+
+If you already have the repo on your Mac:
+
+```bash
+cd /path/to/M3TurboSwitch
+./scripts/build_and_package.sh
+open build/release/M3TurboSwitch.dmg
+```
+
+Then:
+
+1. Drag `M3TurboSwitch.app` to **Applications**.
+2. Open **Applications** and launch **M3TurboSwitch**.
+3. If macOS blocks first launch: right-click app → **Open** → **Open**.
+4. If needed, clear quarantine flag:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/M3TurboSwitch.app
+```
+
+After launch, the app appears in the menu bar as a bolt icon.
